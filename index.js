@@ -67,11 +67,23 @@ client.on('message', function(message) {
   } else if (mess.startsWith(prefix + "clear")) {
     while (queue.length > 0) {
       queue.pop();
-
     }
     message.reply("cleared the queue!");
   } else if (mess.startsWith(prefix + "delete")) {
-    console.log('mess');
+    getID(args, function(id) {
+      console.log(queue);
+      if (queue.indexOf(id) > -1) {
+        fetchVideoInfo(id, function(err, videoInfo) {
+          if (err) throw new Error(err);
+          message.reply(" removing: **" + videoInfo.title + "**");
+          var deleteindex = queue.indexOf(id);
+          queue.splice(deleteindex, 1);
+        });
+      } else {
+        message.reply(" could not find song in queue!")
+      }
+    })
+
   }
 
 
